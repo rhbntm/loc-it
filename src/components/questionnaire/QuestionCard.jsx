@@ -4,21 +4,33 @@
 
 import { OptionButton } from "./OptionButton.jsx";
 
+const STEP_EYEBROWS = [
+  "STEP 1 OF 3 • PROJECT CONTEXT",
+  "STEP 2 OF 3 • SURFACE COMPATIBILITY",
+  "STEP 3 OF 3 • FIT & REPAIR PROFILE",
+];
+
 export function QuestionCard({ question, selectedValue, onSelect }) {
+  const eyebrowText = STEP_EYEBROWS[question.step - 1] || `STEP ${question.step} OF 3`;
+
   return (
     <div key={question.id} className="animate-fade-up">
-      {/* Question text */}
-      <div style={{ marginBottom: "20px" }}>
-        <h2 className="heading-lg" style={{ marginBottom: "6px" }}>
+      {/* Question Header */}
+      <div className="question-header">
+        <div className="question-eyebrow">
+          <span>●</span>
+          <span>{eyebrowText}</span>
+        </div>
+        <h2 className="question-title">
           {question.question}
         </h2>
         {question.hint && (
-          <p className="body-sm text-muted">{question.hint}</p>
+          <p className="question-hint">{question.hint}</p>
         )}
       </div>
 
-      {/* Options */}
-      <div className="options-list" role="group" aria-label={question.question}>
+      {/* Options Grid */}
+      <div className="options-grid" role="group" aria-label={question.question}>
         {question.options.map((option, i) => (
           <div
             key={option.value}
@@ -37,3 +49,4 @@ export function QuestionCard({ question, selectedValue, onSelect }) {
 }
 
 export default QuestionCard;
+

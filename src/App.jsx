@@ -21,6 +21,7 @@ import { Navbar } from "./components/common/Navbar.jsx";
 import { Footer } from "./components/common/Footer.jsx";
 import { LoctiteAIWidget } from "./components/common/LoctiteAIWidget.jsx";
 import { FeedbackTab } from "./components/common/FeedbackTab.jsx";
+import { ScrollToTop } from "./components/common/ScrollToTop.jsx";
 
 const INITIAL_REPAIR_REQUEST = {
   category: null,
@@ -53,6 +54,9 @@ function App() {
 
   return (
     <BrowserRouter>
+      {/* Route scroll reset */}
+      <ScrollToTop />
+
       {/* Official LOCTITE Header */}
       <Navbar />
 

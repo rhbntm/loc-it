@@ -9,18 +9,22 @@ export function OptionButton({ option, isSelected, onSelect }) {
       className={`option-btn ${isSelected ? "option-btn--selected" : ""}`}
       onClick={() => onSelect(option.value)}
       aria-pressed={isSelected}
+      type="button"
     >
       {option.icon && (
-        <span className="option-btn__icon" aria-hidden="true">
+        <div className="option-btn__icon-wrap" aria-hidden="true">
           {option.icon}
-        </span>
+        </div>
       )}
-      <span className="option-btn__label">{option.label}</span>
-      <span className="option-btn__check" aria-hidden="true">
+      <div className="option-btn__content">
+        <span className="option-btn__label">{option.label}</span>
+      </div>
+      <div className="option-btn__check-pill" aria-hidden="true">
         {isSelected ? "✓" : ""}
-      </span>
+      </div>
     </button>
   );
 }
 
 export default OptionButton;
+

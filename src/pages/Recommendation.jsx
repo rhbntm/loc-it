@@ -36,6 +36,7 @@ export function Recommendation({ repairRequest, onReset }) {
   const result = recommendProduct(products, repairRequest);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     trackEvent("recommendation_generated", {
       status: result.status,
       productId: result.product?.id ?? null,
@@ -69,57 +70,66 @@ export function Recommendation({ repairRequest, onReset }) {
   if (result.status !== "recommended") {
     return (
       <div className="page">
-        <div className="site-subnav">
+        <nav className="site-subnav" aria-label="Recommendation Navigation">
           <button
             onClick={() => navigate(-1)}
-            style={{ display: "flex", alignItems: "center", gap: "6px", fontWeight: 700 }}
+            className="site-subnav__btn"
+            aria-label="Go back"
           >
             <span>‹</span>
             <span>BACK</span>
           </button>
-          <span style={{ fontSize: "12px", color: "var(--color-brand-red)", fontWeight: 700 }}>
-            RECOMMENDATION
-          </span>
+          <div className="site-subnav__center">
+            <span>REPAIR RECOMMENDATION</span>
+          </div>
           <button
             onClick={handleReset}
-            style={{ fontSize: "12px", color: "var(--color-text-muted)", fontWeight: 600 }}
+            className="site-subnav__btn"
+            style={{ color: "var(--color-text-muted)" }}
+            aria-label="Start over"
           >
-            Reset
+            Reset ✕
           </button>
-        </div>
+        </nav>
 
-        <main id="main-content" className="container container--card" style={{ padding: "48px 20px" }}>
-          <div className="guide-step-card" style={{ textAlign: "center" }}>
-            <div style={{ fontSize: "48px", marginBottom: "16px" }}>🔍</div>
+        <main id="main-content" className="rec-container">
+          <div className="no-match-box animate-scale-in">
+            <div className="no-match-icon" aria-hidden="true">🔍</div>
 
             {result.status === "needs-more-information" ? (
               <>
-                <h2 className="heading-lg" style={{ marginBottom: "12px" }}>
-                  We need a bit more info
+                <h2 className="heading-xl" style={{ marginBottom: "12px" }}>
+                  We Need a Bit More Detail
                 </h2>
-                <p className="body-sm text-muted" style={{ marginBottom: "24px" }}>
-                  To find the right LOCTITE for your repair, please answer all three
-                  questions — especially the material and repair type.
+                <p className="body-md text-muted" style={{ maxWidth: "520px", margin: "0 auto 28px" }}>
+                  To pinpoint the exact Henkel LOCTITE® formulation for your repair, please complete
+                  all questionnaire steps — especially the bonding material and gap profile.
                 </p>
               </>
             ) : (
               <>
-                <h2 className="heading-lg" style={{ marginBottom: "12px" }}>
-                  No confident match found
+                <h2 className="heading-xl" style={{ marginBottom: "12px" }}>
+                  Specialist Consultation Needed
                 </h2>
-                <p className="body-sm text-muted" style={{ marginBottom: "24px" }}>
-                  We couldn't find a strong match for this repair in the prototype catalog.
-                  Try adjusting your answers or consult a LOCTITE product specialist.
+                <p className="body-md text-muted" style={{ maxWidth: "520px", margin: "0 auto 28px" }}>
+                  This combination represents an uncommon industrial or heavy-duty bond scenario.
+                  Try adjusting your repair fit options, or explore our heavy-duty construction adhesive line.
                 </p>
               </>
             )}
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
               <button id="btn-retry-guide" className="btn btn--primary" onClick={handleRetry}>
-                Try Again
+                Refine Questionnaire →
               </button>
               <button id="btn-reset-from-nomatch" className="btn btn--outline" onClick={handleReset}>
                 Start Over
+              </button>
+              <button
+                className="btn btn--secondary"
+                onClick={() => navigate("/where-to-buy")}
+              >
+                Browse Store Locator
               </button>
             </div>
           </div>
@@ -133,112 +143,105 @@ export function Recommendation({ repairRequest, onReset }) {
   return (
     <div className="page">
       {/* Subnav */}
-      <div className="site-subnav">
+      <nav className="site-subnav" aria-label="Recommendation Navigation">
         <button
           onClick={() => navigate("/guide")}
-          style={{ display: "flex", alignItems: "center", gap: "6px", fontWeight: 700 }}
+          className="site-subnav__btn"
+          aria-label="Back to guide"
         >
           <span>‹</span>
-          <span style={{ letterSpacing: "0.04em", textTransform: "uppercase" }}>REPAIR GUIDE</span>
+          <span>REPAIR GUIDE</span>
         </button>
-        <span style={{ fontSize: "12px", color: "var(--color-brand-red)", fontWeight: 700 }}>
-          RECOMMENDED FOR YOU
-        </span>
+        <div className="site-subnav__center">
+          <span>RECOMMENDED FOR YOU</span>
+        </div>
         <button
           id="btn-reset-from-rec"
           onClick={handleReset}
-          style={{ fontSize: "12px", color: "var(--color-text-muted)", fontWeight: 600 }}
+          className="site-subnav__btn"
+          style={{ color: "var(--color-text-muted)" }}
+          aria-label="Start over"
         >
-          Reset
+          Reset ✕
         </button>
-      </div>
+      </nav>
 
-      <main id="main-content" className="container container--card" style={{ padding: "32px 20px 80px" }}>
-        {/* Header */}
-        <div className="rec-header animate-fade-up">
-          <p className="section-label" style={{ marginBottom: "4px" }}>
-            Your LOCTITE match
-          </p>
-        </div>
-
-        {/* Product card */}
+      <main id="main-content" className="rec-container">
+        {/* Product showcase hero card */}
         <RecommendationCard product={product} />
 
-        {/* Body sections */}
-        <div className="rec-body">
+        {/* Why this match */}
+        <div className="animate-fade-up animate-fade-up--delay-1">
+          <ReasonList reasons={reasons} />
+        </div>
 
-          {/* Divider */}
-          <div className="divider" />
+        {/* How to use step timeline */}
+        <div className="animate-fade-up animate-fade-up--delay-2">
+          <UsageGuide usageSteps={product.usageSteps} />
+        </div>
 
-          {/* Why this match */}
-          <div className="animate-fade-up animate-fade-up--delay-1">
-            <ReasonList reasons={reasons} />
+        {/* See it in action interactive proof */}
+        <div className="animate-fade-up animate-fade-up--delay-3">
+          <ProofSection proof={product.proof} />
+        </div>
+
+        {/* GET LOCTITE — Authorized Retailers & Commerce */}
+        <div className="rec-section-card animate-fade-up animate-fade-up--delay-4">
+          <div className="rec-section-header">
+            <h3 className="rec-section-title">
+              <span>🛒</span>
+              <span>Where to Buy LOCTITE®</span>
+            </h3>
+            <span className="badge badge--green">Official Stockists</span>
           </div>
 
-          <div className="divider" />
+          <p className="body-md text-muted" style={{ marginBottom: "20px" }}>
+            Purchase genuine LOCTITE adhesives online with fast delivery, or check in-store stock at your local hardware supplier.
+          </p>
 
-          {/* How to use */}
-          <div className="animate-fade-up animate-fade-up--delay-2">
-            <UsageGuide usageSteps={product.usageSteps} />
+          <div className="purchase-cta-grid">
+            {product.purchaseLinks.map(({ platform, type, url }) => (
+              <button
+                id={`btn-purchase-${platform.toLowerCase().replace(/\s+/g, "-")}`}
+                key={platform}
+                type="button"
+                className="purchase-channel-card"
+                onClick={() => handlePurchaseClick(platform, url)}
+                aria-label={`Buy on ${platform} (${type})`}
+              >
+                <div className="purchase-channel-top">
+                  <div className="purchase-channel-icon">
+                    {PLATFORM_ICONS[platform] ?? "🛍️"}
+                  </div>
+                  <div>
+                    <div className="purchase-channel-name">{platform}</div>
+                    <div className="purchase-channel-type">{type}</div>
+                  </div>
+                </div>
+                <div className="purchase-channel-bottom">
+                  <span>Check Availability</span>
+                  <span>↗</span>
+                </div>
+              </button>
+            ))}
           </div>
+        </div>
 
-          <div className="divider" />
-
-          {/* See it in action */}
-          <div className="animate-fade-up animate-fade-up--delay-3">
-            <ProofSection proof={product.proof} />
-          </div>
-
-          <div className="divider" />
-
-          {/* GET LOCTITE — Commerce CTA */}
-          <div className="animate-fade-up animate-fade-up--delay-4">
-            <p className="section-label">Get LOCTITE</p>
-            <p className="body-sm text-muted" style={{ marginBottom: "16px" }}>
-              Find this product online or at a store near you.
-              Links are placeholders — official stores to be confirmed.
-            </p>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              {product.purchaseLinks.map(({ platform, type, url }) => (
-                <button
-                  id={`btn-purchase-${platform.toLowerCase().replace(/\s+/g, "-")}`}
-                  key={platform}
-                  className="purchase-btn"
-                  onClick={() => handlePurchaseClick(platform, url)}
-                  aria-label={`Buy on ${platform} (${type})`}
-                >
-                  <span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    <span className="purchase-btn__icon">
-                      {PLATFORM_ICONS[platform] ?? "🔗"}
-                    </span>
-                    <span>
-                      <strong>{platform}</strong>
-                      <br />
-                      <span style={{ fontSize: "12px", color: "var(--color-text-muted)" }}>
-                        {type}
-                      </span>
-                    </span>
-                  </span>
-                  <span className="purchase-btn__arrow">›</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="divider" />
-
-          {/* Start over */}
-          <div style={{ textAlign: "center" }}>
-            <button
-              id="btn-start-over"
-              className="btn btn--outline"
-              onClick={handleReset}
-            >
-              Start a New Repair
-            </button>
-          </div>
-
+        {/* Bottom Quick Actions Footer */}
+        <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap", marginTop: "32px" }}>
+          <button
+            id="btn-start-over"
+            className="btn btn--outline"
+            onClick={handleReset}
+          >
+            Start a New Repair
+          </button>
+          <button
+            className="btn btn--secondary"
+            onClick={() => navigate("/where-to-buy")}
+          >
+            Find Nearby Hardware Stores
+          </button>
         </div>
       </main>
     </div>
@@ -246,3 +249,4 @@ export function Recommendation({ repairRequest, onReset }) {
 }
 
 export default Recommendation;
+

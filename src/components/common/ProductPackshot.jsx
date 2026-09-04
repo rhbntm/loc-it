@@ -3,9 +3,11 @@
  */
 
 export function ProductPackshot({ productId, name }) {
+  const label = name || "LOCTITE Product Illustration";
+
   if (productId === "threadlocker-blue-242") {
     return (
-      <svg viewBox="0 0 100 140" width="90" height="130" style={{ filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.15))" }}>
+      <svg role="img" aria-label={label} viewBox="0 0 100 140" width="90" height="130" style={{ filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.15))" }}>
         {/* Threadlocker blue bottle */}
         <rect x="36" y="10" width="28" height="24" rx="3" fill="#004D90" />
         <rect x="42" y="2" width="16" height="10" rx="2" fill="#FFFFFF" />
