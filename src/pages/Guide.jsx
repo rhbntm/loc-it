@@ -85,37 +85,37 @@ export function Guide({ repairRequest, onAnswer, onComplete, onReset }) {
 
   return (
     <div className="page">
-      {/* Navbar */}
-      <nav className="navbar">
+      {/* Subnav breadcrumb */}
+      <div className="site-subnav">
         <button
           id="btn-back"
-          className="btn btn--ghost"
           onClick={handleBack}
+          style={{ display: "flex", alignItems: "center", gap: "6px", fontWeight: 700 }}
           aria-label="Go back"
-          style={{ padding: "8px 12px", minHeight: "auto" }}
         >
-          ← Back
+          <span>‹</span>
+          <span style={{ letterSpacing: "0.04em", textTransform: "uppercase" }}>BACK</span>
         </button>
 
-        <span className="navbar__brand" style={{ fontSize: "18px" }}>
-          <span className="text-red">LOC</span> IT
+        <span style={{ fontSize: "12px", color: "var(--color-brand-red)", fontWeight: 700 }}>
+          STEP {currentStep} OF {questions.length}
         </span>
 
         <button
           id="btn-reset"
-          className="btn btn--ghost"
           onClick={handleReset}
+          style={{ fontSize: "12px", color: "var(--color-text-muted)", fontWeight: 600 }}
           aria-label="Start over"
-          style={{ padding: "8px 12px", minHeight: "auto", fontSize: "12px" }}
         >
           Reset
         </button>
-      </nav>
-
-      {/* Progress */}
-      <div className="guide-header">
-        <ProgressIndicator currentStep={currentStep} />
       </div>
+
+      <div className="container container--card" style={{ padding: "32px 20px 64px" }}>
+        {/* Progress Bar */}
+        <div style={{ marginBottom: "24px" }}>
+          <ProgressIndicator currentStep={currentStep} />
+        </div>
 
       {/* Question */}
       <main
@@ -153,9 +153,10 @@ export function Guide({ repairRequest, onAnswer, onComplete, onReset }) {
           )
         )}
 
-        <p className="label text-dimmed" style={{ textAlign: "center" }}>
-          Prototype taxonomy — not an official LOCTITE classification
+        <p className="body-sm text-muted" style={{ textAlign: "center", marginTop: "16px" }}>
+          Official LOCTITE® recommendation engine
         </p>
+      </div>
       </div>
     </div>
   );

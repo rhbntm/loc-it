@@ -1,26 +1,22 @@
-/**
- * RecommendationCard — displays the matched product header
- */
+import { ProductPackshot } from "../common/ProductPackshot.jsx";
 
 export function RecommendationCard({ product }) {
   return (
     <div className="rec-product-card animate-scale-in">
-      <div className="rec-product-card__glow" />
-
-      {/* Product image placeholder */}
-      <div className="rec-product-image" aria-label="Product image placeholder">
-        🧲
+      {/* Product image packshot */}
+      <div style={{ display: "flex", justifyContent: "center", padding: "16px 0" }}>
+        <ProductPackshot productId={product.id} name={product.name} />
       </div>
 
       {/* Status badge */}
       <div style={{ display: "flex", justifyContent: "center", marginBottom: "12px" }}>
-        <span className="badge badge--green">✓ &nbsp;Your Match</span>
+        <span className="badge badge--green">✓ &nbsp;Best LOCTITE Match</span>
       </div>
 
       {/* Product name */}
       <h2
-        className="display-md"
-        style={{ textAlign: "center", marginBottom: "8px", lineHeight: "1.1" }}
+        className="heading-xl"
+        style={{ textAlign: "center", marginBottom: "8px", lineHeight: "1.2" }}
       >
         {product.name}
       </h2>

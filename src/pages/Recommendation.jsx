@@ -49,8 +49,10 @@ export function Recommendation({ repairRequest, onReset }) {
       platform,
       productId: result.product?.id,
     });
-    if (url && url !== "#") {
+    if (url && url.startsWith("http")) {
       window.open(url, "_blank", "noopener,noreferrer");
+    } else {
+      navigate("/where-to-buy");
     }
   }
 
@@ -67,19 +69,27 @@ export function Recommendation({ repairRequest, onReset }) {
   if (result.status !== "recommended") {
     return (
       <div className="page">
-        <nav className="navbar">
-          <button className="btn btn--ghost" onClick={() => navigate(-1)}
-            style={{ padding: "8px 12px", minHeight: "auto" }}>
-            ← Back
+        <div className="site-subnav">
+          <button
+            onClick={() => navigate(-1)}
+            style={{ display: "flex", alignItems: "center", gap: "6px", fontWeight: 700 }}
+          >
+            <span>‹</span>
+            <span>BACK</span>
           </button>
-          <span className="navbar__brand" style={{ fontSize: "18px" }}>
-            <span className="text-red">LOC</span> IT
+          <span style={{ fontSize: "12px", color: "var(--color-brand-red)", fontWeight: 700 }}>
+            RECOMMENDATION
           </span>
-          <div style={{ width: "60px" }} />
-        </nav>
+          <button
+            onClick={handleReset}
+            style={{ fontSize: "12px", color: "var(--color-text-muted)", fontWeight: 600 }}
+          >
+            Reset
+          </button>
+        </div>
 
-        <main id="main-content" style={{ padding: "40px 20px", flex: 1 }}>
-          <div className="no-match-card animate-scale-in">
+        <main id="main-content" className="container container--card" style={{ padding: "48px 20px" }}>
+          <div className="guide-step-card" style={{ textAlign: "center" }}>
             <div style={{ fontSize: "48px", marginBottom: "16px" }}>🔍</div>
 
             {result.status === "needs-more-information" ? (
@@ -108,7 +118,7 @@ export function Recommendation({ repairRequest, onReset }) {
               <button id="btn-retry-guide" className="btn btn--primary" onClick={handleRetry}>
                 Try Again
               </button>
-              <button id="btn-reset-from-nomatch" className="btn btn--ghost" onClick={handleReset}>
+              <button id="btn-reset-from-nomatch" className="btn btn--outline" onClick={handleReset}>
                 Start Over
               </button>
             </div>
@@ -122,29 +132,28 @@ export function Recommendation({ repairRequest, onReset }) {
 
   return (
     <div className="page">
-      {/* Navbar */}
-      <nav className="navbar">
+      {/* Subnav */}
+      <div className="site-subnav">
         <button
-          className="btn btn--ghost"
           onClick={() => navigate("/guide")}
-          style={{ padding: "8px 12px", minHeight: "auto" }}
+          style={{ display: "flex", alignItems: "center", gap: "6px", fontWeight: 700 }}
         >
-          ← Back
+          <span>‹</span>
+          <span style={{ letterSpacing: "0.04em", textTransform: "uppercase" }}>REPAIR GUIDE</span>
         </button>
-        <span className="navbar__brand" style={{ fontSize: "18px" }}>
-          <span className="text-red">LOC</span> IT
+        <span style={{ fontSize: "12px", color: "var(--color-brand-red)", fontWeight: 700 }}>
+          RECOMMENDED FOR YOU
         </span>
         <button
           id="btn-reset-from-rec"
-          className="btn btn--ghost"
           onClick={handleReset}
-          style={{ padding: "8px 12px", minHeight: "auto", fontSize: "12px" }}
+          style={{ fontSize: "12px", color: "var(--color-text-muted)", fontWeight: 600 }}
         >
           Reset
         </button>
-      </nav>
+      </div>
 
-      <main id="main-content">
+      <main id="main-content" className="container container--card" style={{ padding: "32px 20px 80px" }}>
         {/* Header */}
         <div className="rec-header animate-fade-up">
           <p className="section-label" style={{ marginBottom: "4px" }}>
